@@ -45,19 +45,22 @@ public class QueryRidesBean implements Serializable {
         // Inicializamos listas vacías para evitar NullPointer
         arrivalCities = new ArrayList<>();
         rides = new ArrayList<>();
+        System.out.println("ikusi"+departCities);
     }
 
     // EVENTO 1: Cuando el usuario cambia la ciudad de origen
-    public void onDepartCityChange(AjaxBehaviorEvent event) {
+    public void onDepartCityChange() {
         try {
             BLFacade facade = FacadeBean.getBusinessLogic();
             // Pedimos a la lógica las ciudades destino posibles desde la ciudad elegida
             arrivalCities = facade.getDestinationCities(selectedDepartCity);
+            System.out.println(arrivalCities);
             rides.clear(); // Limpiamos la tabla si cambiamos de ciudad
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     // EVENTO 2: Cuando el usuario selecciona una fecha en el calendario
     public void onDateSelect(SelectEvent<Date> event) {

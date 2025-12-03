@@ -39,4 +39,22 @@ https://jakarta.ee/xml/ns/jakartaee/web-facesconfig_3_0.xsd"
 </navigation-case>
 </navigation-rule>
 
+<navigation-rule>
+<display-name>Menu.xhtml</display-name>
+<from-view-id>/Menu.xhtml</from-view-id>
+<navigation-case>
+<from-outcome>Login</from-outcome>
+<to-view-id>/Login.xhtml</to-view-id>
+</navigation-case>
+</navigation-rule>
+
+<navigation-rule>
+<display-name>Menu.xhtml</display-name>
+<from-view-id>/Menu.xhtml</from-view-id>
+<navigation-case>
+<from-outcome>Register</from-outcome>
+<to-view-id>/register.xhtml</to-view-id>
+</navigation-case>
+</navigation-rule>
+
 </faces-config>

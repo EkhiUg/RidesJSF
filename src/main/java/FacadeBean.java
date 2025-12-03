@@ -1,6 +1,6 @@
 import businessLogic.BLFacade;
 import businessLogic.BLFacadeImplementation;
-import dataAccess.DataAccess;
+import dataAccess.HibernateDataAccess;
 
 public class FacadeBean {
     // Singleton para mantener una única instancia de la lógica de negocio
@@ -9,8 +9,8 @@ public class FacadeBean {
 
     private FacadeBean() {
         try {
-            // Aquí se conecta con rides.jar y ObjectDB
-            facadeInterface = new BLFacadeImplementation(new DataAccess());
+            // Aquí se conecta con rides.jar usando Hibernate/MariaDB
+            facadeInterface = new BLFacadeImplementation(new HibernateDataAccess());
         } catch (Exception e) {
             System.out.println("FacadeBean: Fallo al crear lógica de negocio: " + e.getMessage());
         }

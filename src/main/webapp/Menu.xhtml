@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+    <h:head>
+    </h:head>
+    <h:body>
+    <div class="main-container">
+        <h1 class="title">Welcome to the Site</h1>
+        <h1 class="title">Please login or register</h1>
+
+        <h:form>
+            <div class="button-container">
+                <h:commandButton value="Login" 
+                                 action="#{index.createRide()}" 
+                                 styleClass="action-button"/> 
+            </div>
+            <div class="button-container">
+                <h:commandButton value="Register" 
+                                 action="#{index.queryRides()}" 
+                                 styleClass="action-button"/>
+            </div>
+        </h:form>
+    </div>
+</h:body>
+</html>

@@ -4,10 +4,10 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
 https://maven.apache.org/xsd/maven-4.0.0.xsd">
  <modelVersion>4.0.0</modelVersion>
  <groupId>org.is2.frameworks</groupId>
- <artifactId>RidesJSF</artifactId>
+ <artifactId>LoginJSF</artifactId>
  <version>0.0.1-SNAPSHOT</version>
  <packaging>war</packaging>
- <name>RidesJSF</name>
+ <name>LoginJSF</name>
 
  <properties>
  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -15,19 +15,47 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
  <maven.compiler.target>11</maven.compiler.target>
  </properties>
  <dependencies>
+ <!-- Hibernate 5.x eta JPA -->
+ <dependency>
+ <groupId>org.hibernate</groupId>
+ <artifactId>hibernate-core</artifactId>
+ <version>5.6.15.Final</version>
+ </dependency>
+ <dependency>
+ <groupId>jakarta.persistence</groupId>
+ <artifactId>jakarta.persistence-api</artifactId>
+ <version>2.2.3</version>
+ </dependency>
+<dependency>
+ <groupId>org.hibernate.validator</groupId>
+ <artifactId>hibernate-validator</artifactId>
+ <version>6.0.20.Final</version>
+</dependency>
+ <!-- MariaDB JDBC Driver -->
+ <dependency>
+ <groupId>org.mariadb.jdbc</groupId>
+ <artifactId>mariadb-java-client</artifactId>
+ <version>3.1.4</version>
+ </dependency>
  <!-- JSF API -->
  <dependency>
  <groupId>org.glassfish</groupId>
  <artifactId>jakarta.faces</artifactId>
  <version>3.0.0</version>
  </dependency>
- <!-- Servlet API -->
+  <!-- Servlet API -->
  <dependency>
  <groupId>jakarta.servlet</groupId>
  <artifactId>jakarta.servlet-api</artifactId>
  <version>5.0.0</version>
  <scope>provided</scope>
  </dependency>
+ <dependency>
+ <groupId>org.primefaces</groupId>
+ <artifactId>primefaces</artifactId>
+ <version>12.0.0</version>
+ <classifier>jakarta</classifier>
+</dependency>
  <dependency>
  <groupId>jakarta.enterprise</groupId>
  <artifactId>jakarta.enterprise.cdi-api</artifactId>
@@ -39,16 +67,20 @@ https://maven.apache.org/xsd/maven-4.0.0.xsd">
  <version>4.0.3.Final</version>
  </dependency>
  <dependency>
+ <groupId>org.omnifaces</groupId>
+ <artifactId>omnifaces</artifactId>
+ <version>4.0.1</version>
+</dependency>
+<dependency>
+<groupId>jakarta.validation</groupId>
+ <artifactId>jakarta.validation-api</artifactId>
+ <version>3.0.2</version>
+ </dependency>
+ <dependency>
  <groupId>jakarta.inject</groupId>
  <artifactId>jakarta.inject-api</artifactId>
  <version>2.0.0</version>
  </dependency>
- <dependency>
- <groupId>org.primefaces</groupId>
- <artifactId>primefaces</artifactId>
- <version>12.0.0</version>
- <classifier>jakarta</classifier>
-</dependency>
  </dependencies>
  <build>
  <plugins>
