@@ -83,7 +83,7 @@ public class LoginBean implements Serializable {
 				currentUser = user;
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome " + user.getName() + "!", null));
-				return "Index"; // Redirect to main page
+				return "index"; // Redirect to main page
 			} else {
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid email or password", null));
@@ -103,11 +103,11 @@ public class LoginBean implements Serializable {
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 		FacesContext.getCurrentInstance().addMessage(null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "You have been logged out", null));
-		return "Menu";
+		return "menu";
 	}
 	
 	public String cancel() {
-		return "Menu";
+		return "menu";
 	}
 
 }

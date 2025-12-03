@@ -15,12 +15,12 @@ public class MenuBean implements Serializable {
 	
 	public String login() {
 		System.out.println("login");
-		return "Login";
+		return "login";
 	}
 	
 	public String register() {
 		System.out.println("register");
-		return "Register";
+		return "register";
 	}
 	
 }

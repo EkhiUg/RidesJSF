@@ -101,7 +101,7 @@ public class RegisterBean implements Serializable {
 			if (user != null) {
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_INFO, "Registration successful! Please login.", null));
-				return "Login";
+				return "login";
 			} else {
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_ERROR, "User with this email already exists", null));
@@ -117,7 +117,7 @@ public class RegisterBean implements Serializable {
 	}
 	
 	public String cancel() {
-		return "Menu";
+		return "menu";
 	}
 
 }
