@@ -42,16 +42,9 @@
 								render="aCity tablaWrapper" />
 						</h:selectOneMenu></td>
 
-					<td rowspan="2" style="vertical-align: top; padding-left: 20px;">
-						Ride date:<br /> <p:calendar id="data" value="#{queryRides.date}"
-							navigator="false" mode="inline">
-							<p:ajax event="dateSelect" listener="#{queryRides.onDateSelect}"
-								update="tablaWrapper mezuak" />
-						</p:calendar>
-					</td>
 				</tr>
 				<tr>
-					<td>Arrival city:</td>
+					<td>Name:</td>
 					<td><h:selectOneMenu id="aCity"
 							value="#{queryRides.selectedArrivalCity}">
 							<f:selectItem itemLabel="Select City" itemValue=""
