@@ -1,23 +1,23 @@
 import java.io.Serializable;
-import java.util.Date;
-
-import org.primefaces.event.SelectEvent;
 
 import businessLogic.BLFacade;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.SessionScoped;
+import domain.User;
 import jakarta.faces.application.FacesMessage;
-
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 
-@Named("Register")
+@Named("register")
 @ViewScoped
 public class RegisterBean implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private String email;
 	private String name;
-	private String role;
+	private String password;
+	private String confirmPassword;
+	private String userType;
 
 	public String getEmail() {
 		return email;
@@ -35,36 +35,89 @@ public class RegisterBean implements Serializable {
 		this.name = name;
 	}
 
-	public String getRole() {
-		return role;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setPassword(String password) {
+		this.password = password;
 	}
-	
-	
 
-	public String userCreate() {
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	}
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+
+	public String register() {
 		try {
-			// 1. Obtener la lógica desde el FacadeBean [cite: 184]
+			// Validate input
+			if (email == null || email.trim().isEmpty()) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email is required", null));
+				return null;
+			}
+			
+			if (name == null || name.trim().isEmpty()) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Name is required", null));
+				return null;
+			}
+			
+			if (password == null || password.trim().isEmpty()) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Password is required", null));
+				return null;
+			}
+			
+			if (!password.equals(confirmPassword)) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Passwords do not match", null));
+				return null;
+			}
+			
+			if (userType == null || userType.trim().isEmpty()) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "User type is required", null));
+				return null;
+			}
+
+			// Get business logic facade
 			BLFacade facade = FacadeBean.getBusinessLogic();
 
-			// 2. Llamar al método createRide (asumo que existe en tu jar antiguo)
-			// Nota: Como no tenemos Login aún, pondremos un conductor "Test Driver" fijo.
-			// facade.createRide(depart, arrival, data, seats, cash, "driver1@gmail.com");
-
-			// 3. Mensaje de éxito
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfully registered"));
-
-			return "ok"; // O null para quedarse en la página
+			// Register user
+			User user = facade.registerUser(email, name, password, userType);
+			
+			if (user != null) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "Registration successful! Please login.", null));
+				return "Login";
+			} else {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "User with this email already exists", null));
+				return null;
+			}
 
 		} catch (Exception e) {
-			// Capturar errores (ej: fechas pasadas, errores de BD)
+			e.printStackTrace();
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: " + e.getMessage(), null));
 			return null;
 		}
+	}
+	
+	public String cancel() {
+		return "Menu";
 	}
 
 }

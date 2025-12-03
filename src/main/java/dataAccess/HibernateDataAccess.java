@@ -15,6 +15,10 @@ import configuration.ConfigXML;
 import configuration.UtilDate;
 import domain.Driver;
 import domain.Ride;
+import domain.User;
+import domain.Customer;
+import domain.Admin;
+import domain.DriverUser;
 import exceptions.RideAlreadyExistException;
 import exceptions.RideMustBeLaterThanTodayException;
 
@@ -173,6 +177,84 @@ public class HibernateDataAccess {
 		if (emf != null && emf.isOpen())
 			emf.close();
 		System.out.println("HibernateDataAccess closed");
+	}
+	
+	/**
+	 * This method registers a new user in the database
+	 * 
+	 * @param email the user's email
+	 * @param name the user's name
+	 * @param password the user's password
+	 * @param userType the type of user (CUSTOMER, ADMIN, DRIVER)
+	 * @return the created user, or null if user already exists
+	 */
+	public User registerUser(String email, String name, String password, String userType) {
+		System.out.println(">> HibernateDataAccess: registerUser=> email= " + email + " name= " + name + " userType= " + userType);
+		try {
+			db.getTransaction().begin();
+			
+			// Check if user already exists
+			User existingUser = db.find(User.class, email);
+			if (existingUser != null) {
+				db.getTransaction().rollback();
+				System.out.println("User already exists with email: " + email);
+				return null;
+			}
+			
+			User user = null;
+			switch (userType.toUpperCase()) {
+				case "CUSTOMER":
+					user = new Customer(email, name, password);
+					break;
+				case "ADMIN":
+					user = new Admin(email, name, password);
+					break;
+				case "DRIVER":
+					user = new DriverUser(email, name, password);
+					break;
+				default:
+					db.getTransaction().rollback();
+					System.out.println("Invalid user type: " + userType);
+					return null;
+			}
+			
+			db.persist(user);
+			db.getTransaction().commit();
+			System.out.println("User registered successfully: " + email);
+			return user;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (db.getTransaction().isActive())
+				db.getTransaction().rollback();
+			return null;
+		}
+	}
+	
+	/**
+	 * This method authenticates a user
+	 * 
+	 * @param email the user's email
+	 * @param password the user's password
+	 * @return the authenticated user, or null if credentials are invalid
+	 */
+	public User loginUser(String email, String password) {
+		System.out.println(">> HibernateDataAccess: loginUser=> email= " + email);
+		try {
+			User user = db.find(User.class, email);
+			
+			if (user != null && user.getPassword().equals(password)) {
+				System.out.println("User authenticated successfully: " + email);
+				return user;
+			} else {
+				System.out.println("Invalid credentials for email: " + email);
+				return null;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

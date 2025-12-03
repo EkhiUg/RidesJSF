@@ -9,85 +9,92 @@
 	<h:head>
 		<title>Register</title>
 		<style>
-.ridesTable {
-	border-collapse: collapse;
-	width: 100%;
-	margin-top: 10px;
-}
-
-.ridesTable th, .ridesTable td {
-	border: 1px solid #ddd;
-	padding: 8px;
-	text-align: center;
-}
-
-.ridesTable th {
-	background-color: #f2f2f2;
-}
-</style>
+			.register-container {
+				max-width: 500px;
+				margin: 50px auto;
+				padding: 20px;
+				border: 1px solid #ddd;
+				border-radius: 5px;
+				background-color: #f9f9f9;
+			}
+			
+			.register-table {
+				width: 100%;
+				margin-top: 20px;
+			}
+			
+			.register-table td {
+				padding: 10px;
+			}
+			
+			.register-table td:first-child {
+				text-align: right;
+				font-weight: bold;
+				width: 40%;
+			}
+			
+			.register-buttons {
+				text-align: center;
+				margin-top: 20px;
+			}
+			
+			.register-buttons button {
+				margin: 0 10px;
+			}
+		</style>
 	</h:head>
 	<h:body>
-		<h:form>
-			<h3>Register</h3>
+		<div class="register-container">
+			<h:form>
+				<h2 style="text-align: center;">Register New Account</h2>
 
-			<table>
-				<tr>
-					<td>Email:</td>
-					<td><h:selectOneMenu value="#{queryRides.selectedDepartCity}">
-							<f:selectItem itemLabel="Select City" itemValue=""
-								noSelectionOption="true" />
-							<f:selectItems value="#{queryRides.departCities}" var="city"
-								itemValue="#{city}" itemLabel="#{city}" />
-							<f:ajax listener="#{queryRides.onDepartCityChange}"
-								render="aCity tablaWrapper" />
-						</h:selectOneMenu></td>
+				<table class="register-table">
+					<tr>
+						<td>Email:</td>
+						<td><h:inputText value="#{register.email}" required="true" 
+							style="width: 100%;" /></td>
+					</tr>
+					<tr>
+						<td>Name:</td>
+						<td><h:inputText value="#{register.name}" required="true" 
+							style="width: 100%;" /></td>
+					</tr>
+					<tr>
+						<td>Password:</td>
+						<td><h:inputSecret value="#{register.password}" required="true" 
+							style="width: 100%;" /></td>
+					</tr>
+					<tr>
+						<td>Confirm Password:</td>
+						<td><h:inputSecret value="#{register.confirmPassword}" required="true" 
+							style="width: 100%;" /></td>
+					</tr>
+					<tr>
+						<td>User Type:</td>
+						<td>
+							<h:selectOneMenu value="#{register.userType}" required="true" 
+								style="width: 100%;">
+								<f:selectItem itemLabel="Select User Type" itemValue="" 
+									noSelectionOption="true" />
+								<f:selectItem itemLabel="Customer" itemValue="CUSTOMER" />
+								<f:selectItem itemLabel="Driver" itemValue="DRIVER" />
+								<f:selectItem itemLabel="Admin" itemValue="ADMIN" />
+							</h:selectOneMenu>
+						</td>
+					</tr>
+				</table>
 
-				</tr>
-				<tr>
-					<td>Name:</td>
-					<td><h:selectOneMenu id="aCity"
-							value="#{queryRides.selectedArrivalCity}">
-							<f:selectItem itemLabel="Select City" itemValue=""
-								noSelectionOption="true" />
-							<f:selectItems value="#{queryRides.arrivalCities}" var="city"
-								itemValue="#{city}" itemLabel="#{city}" />
-							<f:ajax event="valueChange" execute="@this" />
-						</h:selectOneMenu></td>
-				</tr>
-			</table>
+				<div class="register-buttons">
+					<h:commandButton value="Register" action="#{register.register()}" 
+						styleClass="action-button" />
+					<h:commandButton value="Cancel" action="#{register.cancel()}" 
+						immediate="true" styleClass="action-button" />
+				</div>
 
-			<br />
+				<h:messages id="messages" style="color:red; display:block; margin-top:20px;" />
 
-			<h:panelGroup id="tablaWrapper">
-				<h:dataTable id="tablaRides" value="#{queryRides.rides}" var="ride"
-					styleClass="ridesTable" rendered="#{not empty queryRides.rides}">
-
-					<h:column>
-						<f:facet name="header">Driver</f:facet>
-                        #{ride.driver.name}
-                    </h:column>
-
-					<h:column>
-						<f:facet name="header">Seats</f:facet>
-                        #{ride.nPlaces}
-                    </h:column>
-
-					<h:column>
-						<f:facet name="header">Price</f:facet>
-                        #{ride.price}
-                    </h:column>
-
-				</h:dataTable>
-			</h:panelGroup>
-
-			<p>
-				<h:commandButton value="Close" action="#{queryRides.close}"
-					immediate="true" />
-			</p>
-
-			<h:messages id="mezuak" style="color:blue" />
-
-		</h:form>
+			</h:form>
+		</div>
 	</h:body>
 </f:view>
 </html>

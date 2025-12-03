@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<f:view>
+	<h:head>
+		<title>Login</title>
+		<style>
+			.login-container {
+				max-width: 400px;
+				margin: 50px auto;
+				padding: 20px;
+				border: 1px solid #ddd;
+				border-radius: 5px;
+				background-color: #f9f9f9;
+			}
+			
+			.login-table {
+				width: 100%;
+				margin-top: 20px;
+			}
+			
+			.login-table td {
+				padding: 10px;
+			}
+			
+			.login-table td:first-child {
+				text-align: right;
+				font-weight: bold;
+				width: 35%;
+			}
+			
+			.login-buttons {
+				text-align: center;
+				margin-top: 20px;
+			}
+			
+			.login-buttons button {
+				margin: 0 10px;
+			}
+		</style>
+	</h:head>
+	<h:body>
+		<div class="login-container">
+			<h:form>
+				<h2 style="text-align: center;">Login</h2>
+
+				<table class="login-table">
+					<tr>
+						<td>Email:</td>
+						<td><h:inputText value="#{login.email}" required="true" 
+							style="width: 100%;" /></td>
+					</tr>
+					<tr>
+						<td>Password:</td>
+						<td><h:inputSecret value="#{login.password}" required="true" 
+							style="width: 100%;" /></td>
+					</tr>
+				</table>
+
+				<div class="login-buttons">
+					<h:commandButton value="Login" action="#{login.login()}" 
+						styleClass="action-button" />
+					<h:commandButton value="Cancel" action="#{login.cancel()}" 
+						immediate="true" styleClass="action-button" />
+				</div>
+
+				<h:messages id="messages" style="color:red; display:block; margin-top:20px;" />
+
+			</h:form>
+		</div>
+	</h:body>
+</f:view>
+</html>

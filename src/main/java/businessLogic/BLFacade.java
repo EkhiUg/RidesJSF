@@ -6,6 +6,7 @@ import java.util.List;
 //import domain.Booking;
 import domain.Ride;
 import domain.Driver;
+import domain.User;
 import exceptions.RideMustBeLaterThanTodayException;
 import exceptions.RideAlreadyExistException;
 
@@ -73,6 +74,26 @@ public interface BLFacade  {
 	 * It is invoked only when the option "initialize" is declared in the tag dataBaseOpenMode of resources/config.xml file
 	 */	
 	public void initializeBD();
+	
+	/**
+	 * This method registers a new user in the system
+	 * 
+	 * @param email the user's email
+	 * @param name the user's name
+	 * @param password the user's password
+	 * @param userType the type of user (CUSTOMER, ADMIN, DRIVER)
+	 * @return the created user, or null if user already exists
+	 */
+	public User registerUser(String email, String name, String password, String userType);
+	
+	/**
+	 * This method authenticates a user
+	 * 
+	 * @param email the user's email
+	 * @param password the user's password
+	 * @return the authenticated user, or null if credentials are invalid
+	 */
+	public User loginUser(String email, String password);
 
 	
 }

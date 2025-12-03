@@ -10,6 +10,10 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
 		<!-- Entitate-klaseak -->
  <class>domain.Ride</class>
  <class>domain.Driver</class>
+ <class>domain.User</class>
+ <class>domain.Customer</class>
+ <class>domain.Admin</class>
+ <class>domain.DriverUser</class>
 
 <properties>
 <property name="hibernate.hbm2ddl.auto" value="update" />

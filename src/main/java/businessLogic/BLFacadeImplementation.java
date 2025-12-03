@@ -7,6 +7,7 @@ import configuration.ConfigXML;
 import dataAccess.HibernateDataAccess;
 import domain.Ride;
 import domain.Driver;
+import domain.User;
 import exceptions.RideMustBeLaterThanTodayException;
 import exceptions.RideAlreadyExistException;
 
@@ -114,6 +115,26 @@ public class BLFacadeImplementation  implements BLFacade {
     	dbManager.open();
 		dbManager.initializeDB();
 		dbManager.close();
+	}
+	 
+	/**
+	 * {@inheritDoc}
+	 */
+	public User registerUser(String email, String name, String password, String userType) {
+		dbManager.open();
+		User user = dbManager.registerUser(email, name, password, userType);
+		dbManager.close();
+		return user;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public User loginUser(String email, String password) {
+		dbManager.open();
+		User user = dbManager.loginUser(email, password);
+		dbManager.close();
+		return user;
 	}
 
 }
