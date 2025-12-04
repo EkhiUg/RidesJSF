@@ -93,13 +93,13 @@ public class HibernateDataAccess {
 	}
 
 	public List<String> getDepartCities() {
-		TypedQuery<String> query = db.createQuery("SELECT DISTINCT r.from FROM Ride r ORDER BY r.from", String.class);
+		TypedQuery<String> query = db.createQuery("SELECT DISTINCT r.from FROM Ride r WHERE r.from IS NOT NULL ORDER BY r.from", String.class);
 		List<String> cities = query.getResultList();
 		return cities;
 	}
 
 	public List<String> getArrivalCities(String from) {
-		TypedQuery<String> query = db.createQuery("SELECT DISTINCT r.to FROM Ride r WHERE r.from=?1 ORDER BY r.to",
+		TypedQuery<String> query = db.createQuery("SELECT DISTINCT r.to FROM Ride r WHERE r.from=?1 AND r.to IS NOT NULL ORDER BY r.to",
 				String.class);
 		query.setParameter(1, from);
 		List<String> arrivingCities = query.getResultList();
@@ -154,13 +154,11 @@ public class HibernateDataAccess {
 			Ride ride = driver.addRide(from, to, date, nPlaces, price);
 			db.persist(driver);
 			
-			// Also add to DriverUser if it exists
-			if (driverUser != null) {
-				driverUser.addRide(from, to, date, nPlaces, price);
-				db.merge(driverUser);
-			}
+			// Note: We don't add to DriverUser.rides because that would create a duplicate
+			// The ride is already associated with Driver entity which is used for querying
 			
 			db.getTransaction().commit();
+			System.out.println("Ride created successfully: " + ride);
 
 			return ride;
 		} catch (NullPointerException e) {
@@ -175,7 +173,7 @@ public class HibernateDataAccess {
 		System.out.println(">> HibernateDataAccess: getRides=> from= " + from + " to= " + to + " date " + date);
 
 		List<Ride> res = new ArrayList<Ride>();
-		TypedQuery<Ride> query = db.createQuery("SELECT r FROM Ride r WHERE r.from=?1 AND r.to=?2 AND r.date=?3",
+		TypedQuery<Ride> query = db.createQuery("SELECT r FROM Ride r WHERE r.from=?1 AND r.to=?2 AND r.date=?3 AND r.from IS NOT NULL AND r.to IS NOT NULL AND r.date IS NOT NULL",
 				Ride.class);
 		query.setParameter(1, from);
 		query.setParameter(2, to);
