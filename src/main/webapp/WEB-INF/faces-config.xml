@@ -60,7 +60,7 @@ https://jakarta.ee/xml/ns/jakartaee/web-facesconfig_3_0.xsd"
 <from-view-id>/Menu.xhtml</from-view-id>
 <navigation-case>
 <from-outcome>login</from-outcome>
-<to-view-id>/login.xhtml</to-view-id>
+<to-view-id>/Login.xhtml</to-view-id>
 </navigation-case>
 </navigation-rule>
 
@@ -69,43 +69,43 @@ https://jakarta.ee/xml/ns/jakartaee/web-facesconfig_3_0.xsd"
 <from-view-id>/Menu.xhtml</from-view-id>
 <navigation-case>
 <from-outcome>register</from-outcome>
-<to-view-id>/register.xhtml</to-view-id>
+<to-view-id>/Register.xhtml</to-view-id>
 </navigation-case>
 </navigation-rule>
 
 <navigation-rule>
-<display-name>register.xhtml</display-name>
-<from-view-id>/register.xhtml</from-view-id>
+<display-name>Register.xhtml</display-name>
+<from-view-id>/Register.xhtml</from-view-id>
 <navigation-case>
 <from-outcome>login</from-outcome>
-<to-view-id>/login.xhtml</to-view-id>
+<to-view-id>/Login.xhtml</to-view-id>
 </navigation-case>
 </navigation-rule>
 
 <navigation-rule>
-<display-name>register.xhtml</display-name>
-<from-view-id>/register.xhtml</from-view-id>
+<display-name>Register.xhtml</display-name>
+<from-view-id>/Register.xhtml</from-view-id>
 <navigation-case>
 <from-outcome>menu</from-outcome>
-<to-view-id>/menu.xhtml</to-view-id>
+<to-view-id>/Menu.xhtml</to-view-id>
 </navigation-case>
 </navigation-rule>
 
 <navigation-rule>
-<display-name>login.xhtml</display-name>
-<from-view-id>/login.xhtml</from-view-id>
+<display-name>Login.xhtml</display-name>
+<from-view-id>/Login.xhtml</from-view-id>
 <navigation-case>
 <from-outcome>index</from-outcome>
-<to-view-id>/index.xhtml</to-view-id>
+<to-view-id>/Index.xhtml</to-view-id>
 </navigation-case>
 </navigation-rule>
 
 <navigation-rule>
-<display-name>login.xhtml</display-name>
-<from-view-id>/login.xhtml</from-view-id>
+<display-name>Login.xhtml</display-name>
+<from-view-id>/Login.xhtml</from-view-id>
 <navigation-case>
 <from-outcome>menu</from-outcome>
-<to-view-id>/menu.xhtml</to-view-id>
+<to-view-id>/Menu.xhtml</to-view-id>
 </navigation-case>
 </navigation-rule>
 
