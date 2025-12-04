@@ -56,56 +56,65 @@ https://jakarta.ee/xml/ns/jakartaee/web-facesconfig_3_0.xsd"
 </navigation-rule>
 
 <navigation-rule>
-<display-name>Menu.xhtml</display-name>
-<from-view-id>/Menu.xhtml</from-view-id>
+<display-name>menu.xhtml</display-name>
+<from-view-id>/menu.xhtml</from-view-id>
 <navigation-case>
 <from-outcome>login</from-outcome>
-<to-view-id>/Login.xhtml</to-view-id>
+<to-view-id>/login.xhtml</to-view-id>
 </navigation-case>
 </navigation-rule>
 
 <navigation-rule>
-<display-name>Menu.xhtml</display-name>
-<from-view-id>/Menu.xhtml</from-view-id>
+<display-name>menu.xhtml</display-name>
+<from-view-id>/menu.xhtml</from-view-id>
 <navigation-case>
 <from-outcome>register</from-outcome>
-<to-view-id>/Register.xhtml</to-view-id>
+<to-view-id>/register.xhtml</to-view-id>
 </navigation-case>
 </navigation-rule>
 
 <navigation-rule>
-<display-name>Register.xhtml</display-name>
-<from-view-id>/Register.xhtml</from-view-id>
+<display-name>register.xhtml</display-name>
+<from-view-id>/register.xhtml</from-view-id>
 <navigation-case>
 <from-outcome>login</from-outcome>
-<to-view-id>/Login.xhtml</to-view-id>
+<to-view-id>/login.xhtml</to-view-id>
 </navigation-case>
 </navigation-rule>
 
 <navigation-rule>
-<display-name>Register.xhtml</display-name>
-<from-view-id>/Register.xhtml</from-view-id>
+<display-name>register.xhtml</display-name>
+<from-view-id>/register.xhtml</from-view-id>
 <navigation-case>
 <from-outcome>menu</from-outcome>
-<to-view-id>/Menu.xhtml</to-view-id>
+<to-view-id>/menu.xhtml</to-view-id>
 </navigation-case>
 </navigation-rule>
 
 <navigation-rule>
-<display-name>Login.xhtml</display-name>
-<from-view-id>/Login.xhtml</from-view-id>
+<display-name>login.xhtml</display-name>
+<from-view-id>/login.xhtml</from-view-id>
 <navigation-case>
 <from-outcome>index</from-outcome>
-<to-view-id>/Index.xhtml</to-view-id>
+<to-view-id>/index.xhtml</to-view-id>
 </navigation-case>
 </navigation-rule>
 
 <navigation-rule>
-<display-name>Login.xhtml</display-name>
-<from-view-id>/Login.xhtml</from-view-id>
+<display-name>login.xhtml</display-name>
+<from-view-id>/login.xhtml</from-view-id>
 <navigation-case>
 <from-outcome>menu</from-outcome>
-<to-view-id>/Menu.xhtml</to-view-id>
+<to-view-id>/menu.xhtml</to-view-id>
+</navigation-case>
+</navigation-rule>
+
+<navigation-rule>
+<display-name>index.xhtml</display-name>
+<from-view-id>/index.xhtml</from-view-id>
+<navigation-case>
+<from-outcome>menu</from-outcome>
+<to-view-id>/menu.xhtml</to-view-id>
 </navigation-case>
 </navigation-rule>
 
