@@ -128,8 +128,7 @@ public class HibernateDataAccess {
 				if (driver == null) {
 					// Create Driver entity from DriverUser for ride association
 					driver = new Driver(driverEmail, driverUser.getName());
-					db.persist(driver);
-					db.flush(); // Ensure driver is persisted before adding rides
+					// DON'T persist yet - let it be persisted with the ride
 				}
 				
 				// Check if ride already exists
@@ -154,7 +153,13 @@ public class HibernateDataAccess {
 			
 			// Create ride using Driver entity
 			Ride ride = driver.addRide(from, to, date, nPlaces, price);
-			db.persist(driver);
+			
+			// Persist or merge the driver (which will cascade to the ride)
+			if (db.contains(driver)) {
+				db.merge(driver);
+			} else {
+				db.persist(driver);
+			}
 			
 			db.getTransaction().commit();
 			System.out.println("Ride created successfully: " + ride);
