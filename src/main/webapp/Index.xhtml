@@ -10,19 +10,47 @@ xmlns:p="http://primefaces.org/ui">
     <h:body>
     <div class="main-container">
         <h1 class="title">Select Option</h1>
+        
+        <h:panelGroup rendered="#{login.loggedIn}">
+            <p style="text-align: center;">Welcome, #{login.currentUser.name}! (#{login.currentUser.userType})</p>
+        </h:panelGroup>
 
         <h:form>
-            <div class="button-container">
-                <h:commandButton value="Create Ride" 
-                                 action="#{index.createRide()}" 
-                                 styleClass="action-button"/> 
-            </div>
+            <!-- Only show Create Ride button for drivers -->
+            <h:panelGroup rendered="#{login.driver}">
+                <div class="button-container">
+                    <h:commandButton value="Create Ride" 
+                                     action="#{index.createRide()}" 
+                                     styleClass="action-button"/> 
+                </div>
+            </h:panelGroup>
+            
             <div class="button-container">
                 <h:commandButton value="Query Rides" 
                                  action="#{index.queryRides()}" 
                                  styleClass="action-button"/>
             </div>
+            
+            <!-- Logout button if logged in -->
+            <h:panelGroup rendered="#{login.loggedIn}">
+                <div class="button-container">
+                    <h:commandButton value="Logout" 
+                                     action="#{login.logout()}" 
+                                     styleClass="action-button"/>
+                </div>
+            </h:panelGroup>
+            
+            <!-- Login button if not logged in -->
+            <h:panelGroup rendered="#{!login.loggedIn}">
+                <div class="button-container">
+                    <h:commandButton value="Login" 
+                                     action="menu" 
+                                     styleClass="action-button"/>
+                </div>
+            </h:panelGroup>
         </h:form>
+        
+        <h:messages style="color:red; display:block; margin-top:20px;" />
     </div>
 </h:body>
 </html>

@@ -12,6 +12,15 @@ xmlns:p="http://primefaces.org/ui">
 <h:form>
 <h3>Create Ride
 </h3>
+
+<h:panelGroup rendered="#{login.loggedIn and login.driver}">
+    <p style="color: green;">Creating ride as: <strong>#{login.currentUser.name}</strong> (#{login.currentUser.email})</p>
+</h:panelGroup>
+
+<h:panelGroup rendered="#{!login.loggedIn or !login.driver}">
+    <p style="color: red;">You must be logged in as a driver to create rides.</p>
+</h:panelGroup>
+
 <table>
 <tr>
 <td>Depart city:</td>
