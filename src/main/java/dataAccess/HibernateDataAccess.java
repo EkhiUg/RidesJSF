@@ -122,22 +122,24 @@ public class HibernateDataAccess {
 			Driver driver = null;
 			
 			if (driverUser != null) {
-				// New DriverUser system - check if ride exists
-				if (driverUser.doesRideExists(from, to, date)) {
-					db.getTransaction().rollback();
-					throw new RideAlreadyExistException(
-							ResourceBundle.getBundle("Etiquetas").getString("DataAccess.RideAlreadyExist"));
-				}
-				
-				// Find or create the old Driver entity for compatibility
+				// DriverUser exists (new authentication system)
+				// Find or create the Driver entity for ride management
 				driver = db.find(Driver.class, driverEmail);
 				if (driver == null) {
 					// Create Driver entity from DriverUser for ride association
 					driver = new Driver(driverEmail, driverUser.getName());
 					db.persist(driver);
+					db.flush(); // Ensure driver is persisted before adding rides
+				}
+				
+				// Check if ride already exists
+				if (driver.doesRideExists(from, to, date)) {
+					db.getTransaction().rollback();
+					throw new RideAlreadyExistException(
+							ResourceBundle.getBundle("Etiquetas").getString("DataAccess.RideAlreadyExist"));
 				}
 			} else {
-				// Fallback to old Driver system
+				// Fallback to old Driver system (for initial test data)
 				driver = db.find(Driver.class, driverEmail);
 				if (driver == null) {
 					db.getTransaction().rollback();
@@ -150,12 +152,9 @@ public class HibernateDataAccess {
 				}
 			}
 			
-			// Create ride using old Driver entity
+			// Create ride using Driver entity
 			Ride ride = driver.addRide(from, to, date, nPlaces, price);
 			db.persist(driver);
-			
-			// Note: We don't add to DriverUser.rides because that would create a duplicate
-			// The ride is already associated with Driver entity which is used for querying
 			
 			db.getTransaction().commit();
 			System.out.println("Ride created successfully: " + ride);
