@@ -10,11 +10,18 @@ import jakarta.faces.application.FacesMessage;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
 @Named("createRide")
 @ViewScoped
 public class CreateRideBean implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
+	@Inject
+	private LoginBean loginBean;
+	
 	private String depart;
 	private String arrival;
 	private int seats;
@@ -81,20 +88,36 @@ public class CreateRideBean implements Serializable {
 
 	public String rideCreate() {
 		try {
-			// 1. Obtener la lógica desde el FacadeBean [cite: 184]
+			// Check if user is logged in and is a driver
+			if (loginBean == null || !loginBean.isLoggedIn()) {
+				FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "You must be logged in to create a ride", null));
+				return "login";
+			}
+			
+			if (!loginBean.isDriver()) {
+				FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Only drivers can create rides", null));
+				return "index";
+			}
+			
+			// Get the logged-in driver's email
+			String driverEmail = loginBean.getCurrentUser().getEmail();
+			
+			// Get business logic facade
 			BLFacade facade = FacadeBean.getBusinessLogic();
 
-			// 2. Llamar al método createRide (asumo que existe en tu jar antiguo)
-			// Nota: Como no tenemos Login aún, pondremos un conductor "Test Driver" fijo.
-			facade.createRide(depart, arrival, data, seats, cash, "driver1@gmail.com");
+			// Create ride with the logged-in driver's email
+			facade.createRide(depart, arrival, data, seats, cash, driverEmail);
 
-			// 3. Mensaje de éxito
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ride created successfully"));
+			// Success message
+			FacesContext.getCurrentInstance().addMessage(null, 
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "Ride created successfully", null));
 
-			return "ok"; // O null para quedarse en la página
+			return null; // Stay on page to create more rides
 
 		} catch (Exception e) {
-			// Capturar errores (ej: fechas pasadas, errores de BD)
+			// Handle errors (e.g., past dates, database errors)
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: " + e.getMessage(), null));
 			return null;
