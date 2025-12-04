@@ -44,9 +44,16 @@ public class HibernateDataAccess {
 	}
 
 	public void initializeDB() {
-		db.getTransaction().begin();
-
 		try {
+			// Check if database is already initialized by checking for existing drivers
+			Driver existingDriver = db.find(Driver.class, "driver1@gmail.com");
+			if (existingDriver != null) {
+				System.out.println("Database already initialized, skipping initialization");
+				return;
+			}
+			
+			db.getTransaction().begin();
+
 			Calendar today = Calendar.getInstance();
 
 			int month = today.get(Calendar.MONTH);
@@ -76,11 +83,12 @@ public class HibernateDataAccess {
 			db.persist(driver3);
 
 			db.getTransaction().commit();
-			System.out.println("Db initialized (Hibernate)");
+			System.out.println("Db initialized (Hibernate) with sample drivers and rides");
 		} catch (Exception e) {
 			e.printStackTrace();
 			if (db.getTransaction().isActive())
 				db.getTransaction().rollback();
+			System.err.println("Error initializing database: " + e.getMessage());
 		}
 	}
 
