@@ -109,20 +109,56 @@ public class HibernateDataAccess {
 			}
 			db.getTransaction().begin();
 
-			Driver driver = db.find(Driver.class, driverEmail);
-			if (driver.doesRideExists(from, to, date)) {
-				db.getTransaction().commit();
-				throw new RideAlreadyExistException(
-						ResourceBundle.getBundle("Etiquetas").getString("DataAccess.RideAlreadyExist"));
+			// Try to find DriverUser first (new system), fallback to Driver (old system)
+			DriverUser driverUser = db.find(DriverUser.class, driverEmail);
+			Driver driver = null;
+			
+			if (driverUser != null) {
+				// New DriverUser system - check if ride exists
+				if (driverUser.doesRideExists(from, to, date)) {
+					db.getTransaction().rollback();
+					throw new RideAlreadyExistException(
+							ResourceBundle.getBundle("Etiquetas").getString("DataAccess.RideAlreadyExist"));
+				}
+				
+				// Find or create the old Driver entity for compatibility
+				driver = db.find(Driver.class, driverEmail);
+				if (driver == null) {
+					// Create Driver entity from DriverUser for ride association
+					driver = new Driver(driverEmail, driverUser.getName());
+					db.persist(driver);
+				}
+			} else {
+				// Fallback to old Driver system
+				driver = db.find(Driver.class, driverEmail);
+				if (driver == null) {
+					db.getTransaction().rollback();
+					throw new NullPointerException("Driver not found: " + driverEmail);
+				}
+				if (driver.doesRideExists(from, to, date)) {
+					db.getTransaction().rollback();
+					throw new RideAlreadyExistException(
+							ResourceBundle.getBundle("Etiquetas").getString("DataAccess.RideAlreadyExist"));
+				}
 			}
+			
+			// Create ride using old Driver entity
 			Ride ride = driver.addRide(from, to, date, nPlaces, price);
 			db.persist(driver);
+			
+			// Also add to DriverUser if it exists
+			if (driverUser != null) {
+				driverUser.addRide(from, to, date, nPlaces, price);
+				db.merge(driverUser);
+			}
+			
 			db.getTransaction().commit();
 
 			return ride;
 		} catch (NullPointerException e) {
 			if (db.getTransaction().isActive())
-				db.getTransaction().commit();
+				db.getTransaction().rollback();
+			System.err.println("Error: Driver not found or null - " + e.getMessage());
 			return null;
 		}
 	}
