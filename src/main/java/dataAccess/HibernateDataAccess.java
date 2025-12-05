@@ -44,9 +44,16 @@ public class HibernateDataAccess {
 	}
 
 	public void initializeDB() {
-		db.getTransaction().begin();
-
 		try {
+			// Check if database is already initialized by checking for existing drivers
+			Driver existingDriver = db.find(Driver.class, "driver1@gmail.com");
+			if (existingDriver != null) {
+				System.out.println("Database already initialized, skipping initialization");
+				return;
+			}
+			
+			db.getTransaction().begin();
+
 			Calendar today = Calendar.getInstance();
 
 			int month = today.get(Calendar.MONTH);
@@ -76,22 +83,23 @@ public class HibernateDataAccess {
 			db.persist(driver3);
 
 			db.getTransaction().commit();
-			System.out.println("Db initialized (Hibernate)");
+			System.out.println("Db initialized (Hibernate) with sample drivers and rides");
 		} catch (Exception e) {
 			e.printStackTrace();
 			if (db.getTransaction().isActive())
 				db.getTransaction().rollback();
+			System.err.println("Error initializing database: " + e.getMessage());
 		}
 	}
 
 	public List<String> getDepartCities() {
-		TypedQuery<String> query = db.createQuery("SELECT DISTINCT r.from FROM Ride r ORDER BY r.from", String.class);
+		TypedQuery<String> query = db.createQuery("SELECT DISTINCT r.from FROM Ride r WHERE r.from IS NOT NULL ORDER BY r.from", String.class);
 		List<String> cities = query.getResultList();
 		return cities;
 	}
 
 	public List<String> getArrivalCities(String from) {
-		TypedQuery<String> query = db.createQuery("SELECT DISTINCT r.to FROM Ride r WHERE r.from=?1 ORDER BY r.to",
+		TypedQuery<String> query = db.createQuery("SELECT DISTINCT r.to FROM Ride r WHERE r.from=?1 AND r.to IS NOT NULL ORDER BY r.to",
 				String.class);
 		query.setParameter(1, from);
 		List<String> arrivingCities = query.getResultList();
@@ -114,22 +122,23 @@ public class HibernateDataAccess {
 			Driver driver = null;
 			
 			if (driverUser != null) {
-				// New DriverUser system - check if ride exists
-				if (driverUser.doesRideExists(from, to, date)) {
-					db.getTransaction().rollback();
-					throw new RideAlreadyExistException(
-							ResourceBundle.getBundle("Etiquetas").getString("DataAccess.RideAlreadyExist"));
-				}
-				
-				// Find or create the old Driver entity for compatibility
+				// DriverUser exists (new authentication system)
+				// Find or create the Driver entity for ride management
 				driver = db.find(Driver.class, driverEmail);
 				if (driver == null) {
 					// Create Driver entity from DriverUser for ride association
 					driver = new Driver(driverEmail, driverUser.getName());
-					db.persist(driver);
+					// DON'T persist yet - let it be persisted with the ride
+				}
+				
+				// Check if ride already exists
+				if (driver.doesRideExists(from, to, date)) {
+					db.getTransaction().rollback();
+					throw new RideAlreadyExistException(
+							ResourceBundle.getBundle("Etiquetas").getString("DataAccess.RideAlreadyExist"));
 				}
 			} else {
-				// Fallback to old Driver system
+				// Fallback to old Driver system (for initial test data)
 				driver = db.find(Driver.class, driverEmail);
 				if (driver == null) {
 					db.getTransaction().rollback();
@@ -142,17 +151,18 @@ public class HibernateDataAccess {
 				}
 			}
 			
-			// Create ride using old Driver entity
+			// Create ride using Driver entity
 			Ride ride = driver.addRide(from, to, date, nPlaces, price);
-			db.persist(driver);
 			
-			// Also add to DriverUser if it exists
-			if (driverUser != null) {
-				driverUser.addRide(from, to, date, nPlaces, price);
-				db.merge(driverUser);
+			// Persist or merge the driver (which will cascade to the ride)
+			if (db.contains(driver)) {
+				db.merge(driver);
+			} else {
+				db.persist(driver);
 			}
 			
 			db.getTransaction().commit();
+			System.out.println("Ride created successfully: " + ride);
 
 			return ride;
 		} catch (NullPointerException e) {
@@ -167,7 +177,7 @@ public class HibernateDataAccess {
 		System.out.println(">> HibernateDataAccess: getRides=> from= " + from + " to= " + to + " date " + date);
 
 		List<Ride> res = new ArrayList<Ride>();
-		TypedQuery<Ride> query = db.createQuery("SELECT r FROM Ride r WHERE r.from=?1 AND r.to=?2 AND r.date=?3",
+		TypedQuery<Ride> query = db.createQuery("SELECT r FROM Ride r WHERE r.from=?1 AND r.to=?2 AND r.date=?3 AND r.from IS NOT NULL AND r.to IS NOT NULL AND r.date IS NOT NULL",
 				Ride.class);
 		query.setParameter(1, from);
 		query.setParameter(2, to);
@@ -292,5 +302,4 @@ public class HibernateDataAccess {
 			return null;
 		}
 	}
-
 }

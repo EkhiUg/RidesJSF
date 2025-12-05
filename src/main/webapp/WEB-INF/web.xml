@@ -38,7 +38,7 @@ version="6.0">
 
 <!-- Hasierako JSFak -->
 <welcome-file-list>
-<welcome-file>Login.xhtml</welcome-file>
+<welcome-file>Menu.xhtml</welcome-file>
 </welcome-file-list>
 
 </web-app>
