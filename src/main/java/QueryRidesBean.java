@@ -36,16 +36,27 @@ public class QueryRidesBean implements Serializable {
     // Se ejecuta automáticamente al cargar la página para rellenar el primer desplegable [cite: 15, 18]
     @PostConstruct
     public void init() {
-        try {
-            BLFacade facade = FacadeBean.getBusinessLogic();
-            departCities = facade.getDepartCities();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         // Inicializamos listas vacías para evitar NullPointer
         arrivalCities = new ArrayList<>();
         rides = new ArrayList<>();
-        System.out.println("ikusi"+departCities);
+        
+        try {
+            BLFacade facade = FacadeBean.getBusinessLogic();
+            departCities = facade.getDepartCities();
+            
+            // Ensure departCities is not null
+            if (departCities == null) {
+                departCities = new ArrayList<>();
+                System.out.println("Warning: getDepartCities() returned null");
+            }
+            
+            System.out.println("Depart cities loaded: " + departCities.size());
+        } catch (Exception e) {
+            e.printStackTrace();
+            departCities = new ArrayList<>();
+            FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error loading cities: " + e.getMessage(), null));
+        }
     }
 
     // EVENTO 1: Cuando el usuario cambia la ciudad de origen
@@ -54,10 +65,18 @@ public class QueryRidesBean implements Serializable {
             BLFacade facade = FacadeBean.getBusinessLogic();
             // Pedimos a la lógica las ciudades destino posibles desde la ciudad elegida
             arrivalCities = facade.getDestinationCities(selectedDepartCity);
-            System.out.println(arrivalCities);
+            
+            // Ensure arrivalCities is not null
+            if (arrivalCities == null) {
+                arrivalCities = new ArrayList<>();
+                System.out.println("Warning: getDestinationCities() returned null");
+            }
+            
+            System.out.println("Arrival cities: " + arrivalCities);
             rides.clear(); // Limpiamos la tabla si cambiamos de ciudad
         } catch (Exception e) {
             e.printStackTrace();
+            arrivalCities = new ArrayList<>();
         }
     }
 
@@ -80,7 +99,7 @@ public class QueryRidesBean implements Serializable {
     }
     
     public String close() {
-    	return "Index";
+    	return "index";
     }
 
     // --- Getters y Setters ---

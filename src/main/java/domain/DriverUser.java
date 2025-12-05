@@ -2,8 +2,6 @@ package domain;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-import java.util.Vector;
 
 import javax.persistence.*;
 
@@ -11,6 +9,9 @@ import javax.persistence.*;
 public class DriverUser extends User implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
+	
+	// Removed @OneToMany relationship - rides are managed by Driver entity
+	// DriverUser is for authentication, Driver is for ride management
 	
 	public DriverUser() {
 		super();
@@ -22,6 +23,6 @@ public class DriverUser extends User implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "DriverUser [email=" + getEmail() + ", name=" + getName() + ", rides=" + rides.size() + "]";
+		return "DriverUser [email=" + getEmail() + ", name=" + getName() + "]";
 	}
 }
