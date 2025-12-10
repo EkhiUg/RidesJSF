@@ -278,6 +278,78 @@ public class HibernateDataAccess {
 	}
 	
 	/**
+	 * This method retrieves all drivers from the database
+	 * 
+	 * @return list of all drivers
+	 */
+	public List<Driver> getAllDrivers() {
+		System.out.println(">> HibernateDataAccess: getAllDrivers");
+		try {
+			TypedQuery<Driver> query = db.createQuery("SELECT d FROM Driver d ORDER BY d.email", Driver.class);
+			List<Driver> drivers = query.getResultList();
+			System.out.println("Found " + drivers.size() + " drivers");
+			return drivers;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<Driver>();
+		}
+	}
+	
+	/**
+	 * This method deletes a driver and all their associated rides from the database
+	 * Also deletes the corresponding DriverUser if it exists
+	 * 
+	 * @param driverEmail the email of the driver to delete
+	 * @return true if deletion was successful, false otherwise
+	 */
+	public boolean deleteDriver(String driverEmail) {
+		System.out.println(">> HibernateDataAccess: deleteDriver=> email= " + driverEmail);
+		try {
+			db.getTransaction().begin();
+			
+			// Find the driver
+			Driver driver = db.find(Driver.class, driverEmail);
+			if (driver == null) {
+				db.getTransaction().rollback();
+				System.out.println("Driver not found: " + driverEmail);
+				return false;
+			}
+			
+			// Delete all rides associated with this driver
+			// The cascade should handle this, but we'll do it explicitly to be safe
+			TypedQuery<Ride> rideQuery = db.createQuery("SELECT r FROM Ride r WHERE r.driver.email = ?1", Ride.class);
+			rideQuery.setParameter(1, driverEmail);
+			List<Ride> rides = rideQuery.getResultList();
+			for (Ride ride : rides) {
+				db.remove(ride);
+			}
+			System.out.println("Deleted " + rides.size() + " rides for driver: " + driverEmail);
+			
+			// Delete the driver
+			db.remove(driver);
+			System.out.println("Deleted driver: " + driverEmail);
+			
+			// Check if there's a corresponding DriverUser and delete it
+			DriverUser driverUser = db.find(DriverUser.class, driverEmail);
+			if (driverUser != null) {
+				db.remove(driverUser);
+				System.out.println("Deleted DriverUser: " + driverEmail);
+			}
+			
+			db.getTransaction().commit();
+			System.out.println("Driver deletion completed successfully");
+			return true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (db.getTransaction().isActive())
+				db.getTransaction().rollback();
+			System.err.println("Error deleting driver: " + e.getMessage());
+			return false;
+		}
+	}
+	
+	/**
 	 * This method authenticates a user
 	 * 
 	 * @param email the user's email

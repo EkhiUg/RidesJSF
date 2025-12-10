@@ -45,7 +45,13 @@ public class Driver implements Serializable {
 		this.name = name;
 	}
 
-	
+	public List<Ride> getRides() {
+		return rides;
+	}
+
+	public void setRides(List<Ride> rides) {
+		this.rides = rides;
+	}
 	
 	public String toString(){
 		return email+";"+name+rides;

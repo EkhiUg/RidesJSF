@@ -136,6 +136,26 @@ public class BLFacadeImplementation  implements BLFacade {
 		dbManager.close();
 		return user;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public List<Driver> getAllDrivers() {
+		dbManager.open();
+		List<Driver> drivers = dbManager.getAllDrivers();
+		dbManager.close();
+		return drivers;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean deleteDriver(String driverEmail) {
+		dbManager.open();
+		boolean result = dbManager.deleteDriver(driverEmail);
+		dbManager.close();
+		return result;
+	}
 
 }
 

@@ -25,6 +25,15 @@ xmlns:p="http://primefaces.org/ui">
                 </div>
             </h:panelGroup>
             
+            <!-- Only show Admin Panel button for admins -->
+            <h:panelGroup rendered="#{login.admin}">
+                <div class="button-container">
+                    <h:commandButton value="Admin Panel" 
+                                     action="Admin" 
+                                     styleClass="action-button"/> 
+                </div>
+            </h:panelGroup>
+            
             <div class="button-container">
                 <h:commandButton value="Query Rides" 
                                  action="#{index.queryRides()}" 

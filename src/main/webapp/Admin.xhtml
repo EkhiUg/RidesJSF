@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<f:view>
+	<h:head>
+		<title>Admin Panel</title>
+	</h:head>
+	<h:body>
+		<h:form>
+			<h2>Admin Panel - Manage Drivers</h2>
+			
+			<!-- Check if user is admin -->
+			<h:panelGroup rendered="#{!admin.admin}">
+				<p style="color: red;">Access denied. You must be an admin to view this page.</p>
+				<h:commandButton value="Back to Menu" action="#{admin.backToMenu}" />
+			</h:panelGroup>
+			
+			<!-- Admin content -->
+			<h:panelGroup rendered="#{admin.admin}">
+				<p>Deleting a driver will also remove all their rides and user account.</p>
+				
+				<h:messages style="color:red;" />
+				
+				<!-- Drivers table -->
+				<h:dataTable value="#{admin.drivers}" var="driver" 
+					border="1"
+					rendered="#{not empty admin.drivers}">
+					
+					<h:column>
+						<f:facet name="header">Email</f:facet>
+						#{driver.email}
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">Name</f:facet>
+						#{driver.name}
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">Rides</f:facet>
+						#{driver.rides.size()}
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">Action</f:facet>
+						<h:commandButton value="Delete" 
+							action="#{admin.deleteDriver}"
+							onclick="return confirm('Delete this driver and all their rides?');">
+							<f:setPropertyActionListener 
+								target="#{admin.selectedDriverEmail}" 
+								value="#{driver.email}" />
+						</h:commandButton>
+					</h:column>
+				</h:dataTable>
+				
+				<!-- Message if no drivers -->
+				<h:panelGroup rendered="#{empty admin.drivers}">
+					<p>No drivers found.</p>
+				</h:panelGroup>
+				
+				<p>
+					<h:commandButton value="Refresh" action="#{admin.loadDrivers}" />
+					<h:commandButton value="Back" action="#{admin.backToMenu}" />
+				</p>
+			</h:panelGroup>
+		</h:form>
+	</h:body>
+</f:view>
+</html>

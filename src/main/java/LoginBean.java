@@ -81,6 +81,8 @@ public class LoginBean implements Serializable {
 			
 			if (user != null) {
 				currentUser = user;
+				// Store user in session so other beans can access it
+				FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentUser", user);
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome " + user.getName() + "!", null));
 				return "index"; // Redirect to main page

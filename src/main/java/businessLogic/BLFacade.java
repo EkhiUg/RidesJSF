@@ -94,6 +94,22 @@ public interface BLFacade  {
 	 * @return the authenticated user, or null if credentials are invalid
 	 */
 	public User loginUser(String email, String password);
+	
+	/**
+	 * This method retrieves all drivers from the database
+	 * 
+	 * @return list of all drivers
+	 */
+	public List<Driver> getAllDrivers();
+	
+	/**
+	 * This method deletes a driver and all their associated rides
+	 * Also deletes the corresponding DriverUser if it exists
+	 * 
+	 * @param driverEmail the email of the driver to delete
+	 * @return true if deletion was successful, false otherwise
+	 */
+	public boolean deleteDriver(String driverEmail);
 
 	
 }
