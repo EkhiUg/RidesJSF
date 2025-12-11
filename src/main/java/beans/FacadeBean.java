@@ -1,3 +1,4 @@
+package beans;
 import businessLogic.BLFacade;
 import businessLogic.BLFacadeImplementation;
 import dataAccess.HibernateDataAccess;

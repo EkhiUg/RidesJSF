@@ -1,3 +1,4 @@
+package beans;
 import java.io.Serializable;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;

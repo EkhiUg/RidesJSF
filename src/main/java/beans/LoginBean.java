@@ -1,3 +1,4 @@
+package beans;
 import java.io.Serializable;
 
 import businessLogic.BLFacade;
