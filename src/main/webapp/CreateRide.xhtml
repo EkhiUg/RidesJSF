@@ -1,58 +1,63 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-xmlns:ui="http://java.sun.com/jsf/facelets"
-xmlns:h="http://java.sun.com/jsf/html"
-xmlns:f="http://java.sun.com/jsf/core"
-xmlns:p="http://primefaces.org/ui">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
 <f:view>
-<h:head>
-</h:head>
-<h:body>
-<h:form>
-<h3>Create Ride
-</h3>
+	<h:head>
+	</h:head>
+	<h:body>
+		<h:form>
+			<h3>Create Ride</h3>
 
-<h:panelGroup rendered="#{login.loggedIn and login.driver}">
-    <p style="color: green;">Creating ride as: <strong>#{login.currentUser.name}</strong> (#{login.currentUser.email})</p>
-</h:panelGroup>
+			<h:panelGroup rendered="#{login.loggedIn and login.driver}">
+				<p style="color: green;">
+					Creating ride as: <strong>#{login.currentUser.name}</strong>
+					(#{login.currentUser.email})
+				</p>
+			</h:panelGroup>
 
-<h:panelGroup rendered="#{!login.loggedIn or !login.driver}">
-    <p style="color: red;">You must be logged in as a driver to create rides.</p>
-</h:panelGroup>
+			<h:panelGroup rendered="#{!login.loggedIn or !login.driver}">
+				<p style="color: red;">You must be logged in as a driver to
+					create rides.</p>
+			</h:panelGroup>
 
-<table>
-<tr>
-<td>Depart city:</td>
-<td><h:inputText id="dCity" value="#{createRide.depart}"></h:inputText></td>
-</tr>
-<tr>
-<td>Arrival city:</td>
-<td><h:inputText id="aCity" value="#{createRide.arrival}"></h:inputText></td>
-</tr>
-<tr>
-<td>Number of seats:</td>
-<td><h:inputText id="nSeats" value="#{createRide.seats}"></h:inputText></td>
-</tr>
-<tr>
-<td>Price:</td>
-<td><h:inputText id="price" value="#{createRide.cash}"></h:inputText></td>
-</tr>
-<tr>
-<td>Ride date:</td>
-<td><p:calendar id="data" value="#{createRide.data}" navigator="false" mode="inline">
-<p:ajax event="dateSelect" listener="#{createRide.onDateSelect}"
-update="mezuak"></p:ajax>
-</p:calendar></td></tr>
-</table>
-<p>
-<h:commandButton value="Create ride" action="#{createRide.rideCreate}" />
-<h:commandButton value="Close" action="Index" immediate="true"
-/>
-</p>
-<h:messages style="color:blue"/>
-<h:messages id="mezuak" style="color:blue"/>
-</h:form>
-</h:body>
+			<table>
+				<tr>
+					<td>Depart city:</td>
+					<td><h:inputText id="dCity" value="#{createRide.depart}"></h:inputText></td>
+				</tr>
+				<tr>
+					<td>Arrival city:</td>
+					<td><h:inputText id="aCity" value="#{createRide.arrival}"></h:inputText></td>
+				</tr>
+				<tr>
+					<td>Number of seats:</td>
+					<td><h:inputText id="nSeats" value="#{createRide.seats}"></h:inputText></td>
+				</tr>
+				<tr>
+					<td>Price:</td>
+					<td><h:inputText id="price" value="#{createRide.cash}"></h:inputText></td>
+				</tr>
+				<tr>
+					<td>Ride date:</td>
+					<td><p:calendar id="data" value="#{createRide.data}"
+							navigator="false" mode="inline">
+							<p:ajax event="dateSelect" listener="#{createRide.onDateSelect}"
+								update="mezuak"></p:ajax>
+						</p:calendar></td>
+				</tr>
+			</table>
+			<p>
+				<h:commandButton value="Create ride"
+					action="#{createRide.rideCreate}" />
+				<h:commandButton value="Close" action="Index" immediate="true" />
+			</p>
+			<h:messages style="color:blue" />
+			<h:messages id="mezuak" style="color:blue" />
+		</h:form>
+	</h:body>
 </f:view>
 </html>

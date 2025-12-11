@@ -33,7 +33,6 @@ public class HibernateDataAccess {
 
 		initializeDB();
 
-		// NO CERRAR AQUI
 		System.out.println("HibernateDataAccess created => using persistence-unit 'iraunkortasuna'");
 		System.out.println("DB initialized? " + c.isDatabaseInitialized());
 
