@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<f:view>
+	<h:head>
+		<title>Find Rides</title>
+		<style>
+.ridesTable {
+	border-collapse: collapse;
+	width: 100%;
+	margin-top: 10px;
+}
+
+.ridesTable th, .ridesTable td {
+	border: 1px solid #ddd;
+	padding: 8px;
+	text-align: center;
+}
+
+.ridesTable th {
+	background-color: #f2f2f2;
+}
+</style>
+	</h:head>
+	<h:body>
+		<h:form>
+			<h3>Find Rides</h3>
+
+			<br />
+
+			<h:panelGroup id="tablaWrapper">
+				<h:dataTable id="tablaRides" value="#{eserlekuBidaiak.rides}" var="ride"
+					styleClass="ridesTable" rendered="#{not empty eserlekuBidaiak.rides}">
+
+					<h:column>
+						<f:facet name="header">Driver email</f:facet>
+                        #{ride.driver.email}
+                    </h:column>
+
+					<h:column>
+						<f:facet name="header">Arrival city</f:facet>
+                        #{ride.to}
+                    </h:column>
+                    
+                    <h:column>
+						<f:facet name="header">Depart city</f:facet>
+                        #{ride.from}
+                    </h:column>
+
+					<h:column>
+						<f:facet name="header">Price</f:facet>
+                        #{ride.price}
+                    </h:column>
+                    
+                    <h:column>
+						<f:facet name="header">Date</f:facet>
+                        #{ride.date}
+                    </h:column>
+                    
+                    <h:column>
+						<f:facet name="header">nSeats</f:facet>
+                        #{ride.nPlaces}
+                    </h:column>
+				</h:dataTable>
+			</h:panelGroup>
+
+		<p>
+				<h:commandButton value="Close" action="#{eserlekuBidaiak.close}"
+					immediate="true" />
+			</p>
+
+			<h:messages id="mezuak" style="color:blue" />
+
+		</h:form>
+	</h:body>
+</f:view>
+</html>

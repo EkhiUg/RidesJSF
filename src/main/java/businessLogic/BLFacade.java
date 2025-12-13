@@ -110,6 +110,8 @@ public interface BLFacade  {
 	 * @return true if deletion was successful, false otherwise
 	 */
 	public boolean deleteDriver(String driverEmail);
+	
+	public List<Ride> getAllRides(String seats);
 
 	
 }

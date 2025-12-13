@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<f:view>
+	<h:head>
+		<title>Find Rides</title>
+		<style>
+.ridesTable {
+	border-collapse: collapse;
+	width: 100%;
+	margin-top: 10px;
+}
+
+.ridesTable th, .ridesTable td {
+	border: 1px solid #ddd;
+	padding: 8px;
+	text-align: center;
+}
+
+.ridesTable th {
+	background-color: #f2f2f2;
+}
+</style>
+	</h:head>
+	<h:body>
+		<h:form>
+			<h3>Find Rides</h3>
+
+			<table>
+				<tr>
+					<td>Aukeratu eserleku kopurua</td>
+					<td><h:inputText id="eserleku" value="#{eserlekuBidaiak.seats}"></h:inputText></td>
+				</tr>
+			<h:commandButton value="Aurrera" action="#{eserlekuBidaiak.kargatu}" />
+			</table>
+			<p>
+				<h:commandButton value="Close" action="#{eserlekuBidaiak.close}"
+					immediate="true" />
+			</p>
+
+			<h:messages id="mezuak" style="color:blue" />
+
+		</h:form>
+	</h:body>
+</f:view>
+</html>

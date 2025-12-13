@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf17654926555900" configfile="/RidesJSF/src/main/webapp/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="Index.xhtml" x="338" y="604" id="pf17654927222681" referenceLink="//@navigationRule.14/@fromViewId|" outlinks="pf17654927222682 pf17654927222693 pf17654927222694 pf17654927222695 pf17654927222696" inlinks="pf17654927222697 pf17654927222698 pf17654927222699 pf176549272226910" path="/Index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="CreateRide.xhtml" x="122" y="705" id="pf176549272226911" referenceLink="//@navigationRule.4/@fromViewId|" outlinks="pf17654927222697 pf176549272226912" inlinks="pf17654927222682" path="/CreateRide.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="QueryRides.xhtml" x="554" y="178" id="pf176549272226913" referenceLink="//@navigationRule.5/@fromViewId|" outlinks="pf17654927222698" inlinks="pf17654927222693" path="/QueryRides.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="Login.xhtml" x="770" y="806" id="pf176549272226914" referenceLink="//@navigationRule.11/@fromViewId|" outlinks="pf17654927222699 pf176549272226915" inlinks="pf17654927222694 pf176549272226912 pf176549272226916 pf176549272226917" path="/Login.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="Menu.xhtml" x="554" y="1009" id="pf176549272226918" referenceLink="//@navigationRule.16/@fromViewId|" outlinks="pf176549272226916 pf176549272226919 pf176549272226920" inlinks="pf176549272226921 pf176549272226915 pf17654927222695" path="/Menu.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="Register.xhtml" x="338" y="1110" id="pf176549272226922" referenceLink="//@navigationRule.9/@fromViewId|" outlinks="pf176549272226917 pf176549272226921" inlinks="pf176549272226919" path="/Register.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="Admin.xhtml" x="554" y="562" id="pf176549272226923" referenceLink="//@navigationRule.14/@navigationCase.0/@toViewId|" outlinks="pf176549272226910" inlinks="pf17654927222696" path="/Admin.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="dataBidaiak.xhtml" id="pf176549272226924" referenceLink="//@navigationRule.16/@fromViewId|" outlinks="pf17654942257180" inlinks="pf176549272226920" path="/dataBidaiak.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="dataBidaiak2.xhtml" id="pf17654942257191" referenceLink="//@navigationRule.16/@navigationCase.0/@toViewId|" inlinks="pf17654942257180" path="/dataBidaiak2.xhtml"/>
+  <links id="pf17654927222682" target="pf176549272226911" source="pf17654927222681" outcome="CreateRide"/>
+  <links id="pf17654927222693" target="pf176549272226913" source="pf17654927222681" outcome="QueryRides"/>
+  <links id="pf17654927222694" target="pf176549272226914" source="pf17654927222681" outcome="login"/>
+  <links id="pf17654927222697" target="pf17654927222681" source="pf176549272226911" outcome="index"/>
+  <links id="pf176549272226912" target="pf176549272226914" source="pf176549272226911" outcome="login"/>
+  <links id="pf17654927222698" target="pf17654927222681" source="pf176549272226913" outcome="index"/>
+  <links id="pf176549272226916" target="pf176549272226914" source="pf176549272226918" outcome="login"/>
+  <links id="pf176549272226919" target="pf176549272226922" source="pf176549272226918" outcome="register"/>
+  <links id="pf176549272226917" target="pf176549272226914" source="pf176549272226922" outcome="login"/>
+  <links id="pf176549272226921" target="pf176549272226918" source="pf176549272226922" outcome="menu"/>
+  <links id="pf17654927222699" target="pf17654927222681" source="pf176549272226914" outcome="index"/>
+  <links id="pf176549272226915" target="pf176549272226918" source="pf176549272226914" outcome="menu"/>
+  <links id="pf17654927222695" target="pf176549272226918" source="pf17654927222681" outcome="menu"/>
+  <links id="pf176549272226910" target="pf17654927222681" source="pf176549272226923" outcome="index"/>
+  <links id="pf17654927222696" target="pf176549272226923" source="pf17654927222681" outcome="Admin"/>
+  <links id="pf176549272226920" target="pf176549272226924" source="pf176549272226918" outcome="lal"/>
+  <links id="pf17654942257180" target="pf17654942257191" source="pf176549272226924" outcome="kargatu"/>
+</pageflow:Pageflow>

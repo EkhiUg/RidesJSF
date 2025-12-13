@@ -24,4 +24,9 @@ public class MenuBean implements Serializable {
 		return "register";
 	}
 	
+	public String eserleku() {
+		System.out.println("eserleku");
+		return "eserleku";
+	}
+	
 }

@@ -156,6 +156,13 @@ public class BLFacadeImplementation  implements BLFacade {
 		dbManager.close();
 		return result;
 	}
+	
+	public List<Ride> getAllRides(String seats){
+		dbManager.open();
+		List<Ride> rides = dbManager.getAllRides(seats);
+		dbManager.close();
+		return rides;
+		}
 
 }
 

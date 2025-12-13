@@ -294,6 +294,21 @@ public class HibernateDataAccess {
 		}
 	}
 	
+	public List<Ride> getAllRides(String seats){
+		try {
+			int numSeats = Integer.parseInt(seats);
+			TypedQuery<Ride> query = db.createQuery("SELECT r FROM Ride r WHERE r.nPlaces = ?1", Ride.class);
+			query.setParameter(1, numSeats);
+			List<Ride> rides = query.getResultList();
+			return rides;
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<Ride>();
+		}
+		
+	}
+	
 	/**
 	 * This method deletes a driver and all their associated rides from the database
 	 * Also deletes the corresponding DriverUser if it exists
