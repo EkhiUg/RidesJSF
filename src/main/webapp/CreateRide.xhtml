@@ -27,24 +27,28 @@
 			<table>
 				<tr>
 					<td>Depart city:</td>
-					<td><h:inputText id="dCity" value="#{createRide.depart}"></h:inputText></td>
+					<td><h:inputText id="dCity" value="#{createRide.depart}" required="true" requiredMessage="Departure city is required"></h:inputText></td>
 				</tr>
 				<tr>
 					<td>Arrival city:</td>
-					<td><h:inputText id="aCity" value="#{createRide.arrival}"></h:inputText></td>
+					<td><h:inputText id="aCity" value="#{createRide.arrival}" required="true" requiredMessage="Arrival city is required"></h:inputText></td>
 				</tr>
 				<tr>
 					<td>Number of seats:</td>
-					<td><h:inputText id="nSeats" value="#{createRide.seats}"></h:inputText></td>
+					<td><h:inputText id="nSeats" value="#{createRide.seats}" required="true" requiredMessage="Number of seats is required">
+						<f:validateLongRange minimum="1" />
+					</h:inputText></td>
 				</tr>
 				<tr>
 					<td>Price:</td>
-					<td><h:inputText id="price" value="#{createRide.cash}"></h:inputText></td>
+					<td><h:inputText id="price" value="#{createRide.cash}" required="true" requiredMessage="Price is required">
+						<f:validateLongRange minimum="1" />
+					</h:inputText></td>
 				</tr>
 				<tr>
 					<td>Ride date:</td>
 					<td><p:calendar id="data" value="#{createRide.data}"
-							navigator="false" mode="inline">
+							navigator="false" mode="inline" required="true" requiredMessage="Ride date is required">
 							<p:ajax event="dateSelect" listener="#{createRide.onDateSelect}"
 								update="mezuak"></p:ajax>
 						</p:calendar></td>

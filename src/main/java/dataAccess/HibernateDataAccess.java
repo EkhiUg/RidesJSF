@@ -109,30 +109,42 @@ public class HibernateDataAccess {
 			throws RideAlreadyExistException, RideMustBeLaterThanTodayException {
 		System.out.println(">> HibernateDataAccess: createRide=> from= " + from + " to= " + to + " driver="
 				+ driverEmail + " date " + date);
+		
+		Driver driver = null;
+		Ride ride = null;
+		
 		try {
-			if (new Date().compareTo(date) > 0) {
+			// Validate inputs BEFORE starting transaction
+			if (date == null || new Date().compareTo(date) > 0) {
 				throw new RideMustBeLaterThanTodayException(
 						ResourceBundle.getBundle("Etiquetas").getString("CreateRideGUI.ErrorRideMustBeLaterThanToday"));
 			}
+			
+			if (from == null || to == null || driverEmail == null) {
+				throw new IllegalArgumentException("from, to, and driverEmail cannot be null");
+			}
+			
 			db.getTransaction().begin();
 
 			// Try to find DriverUser first (new system), fallback to Driver (old system)
 			DriverUser driverUser = db.find(DriverUser.class, driverEmail);
-			Driver driver = null;
 			
 			if (driverUser != null) {
 				// DriverUser exists (new authentication system)
 				// Find or create the Driver entity for ride management
 				driver = db.find(Driver.class, driverEmail);
 				if (driver == null) {
-					// Create Driver entity from DriverUser for ride association
+					// Create NEW Driver entity from DriverUser for ride association
 					driver = new Driver(driverEmail, driverUser.getName());
-					// DON'T persist yet - let it be persisted with the ride
+				} else {
+					// CRITICAL: Refresh driver to get latest state and prevent stale rides
+					db.refresh(driver);
 				}
 				
 				// Check if ride already exists
 				if (driver.doesRideExists(from, to, date)) {
 					db.getTransaction().rollback();
+					db.clear();
 					throw new RideAlreadyExistException(
 							ResourceBundle.getBundle("Etiquetas").getString("DataAccess.RideAlreadyExist"));
 				}
@@ -141,34 +153,58 @@ public class HibernateDataAccess {
 				driver = db.find(Driver.class, driverEmail);
 				if (driver == null) {
 					db.getTransaction().rollback();
+					db.clear();
 					throw new NullPointerException("Driver not found: " + driverEmail);
 				}
+				// CRITICAL: Refresh driver to get latest state
+				db.refresh(driver);
+				
 				if (driver.doesRideExists(from, to, date)) {
 					db.getTransaction().rollback();
+					db.clear();
 					throw new RideAlreadyExistException(
 							ResourceBundle.getBundle("Etiquetas").getString("DataAccess.RideAlreadyExist"));
 				}
 			}
 			
-			// Create ride using Driver entity
-			Ride ride = driver.addRide(from, to, date, nPlaces, price);
+			// Create ride using Driver entity - NOW the driver has fresh state
+			ride = driver.addRide(from, to, date, nPlaces, price);
 			
-			// Persist or merge the driver (which will cascade to the ride)
-			if (db.contains(driver)) {
-				db.merge(driver);
-			} else {
+			// Only persist the driver if it's new, otherwise just merge
+			if (!db.contains(driver)) {
 				db.persist(driver);
 			}
+			// Merge is not needed - the ride is already in the managed driver's collection
 			
 			db.getTransaction().commit();
 			System.out.println("Ride created successfully: " + ride);
 
 			return ride;
-		} catch (NullPointerException e) {
-			if (db.getTransaction().isActive())
+			
+		} catch (RideMustBeLaterThanTodayException | RideAlreadyExistException e) {
+			// Clean up: remove the ride from driver's list if it was added
+			if (driver != null && ride != null) {
+				driver.getRides().remove(ride);
+			}
+			if (db.getTransaction().isActive()) {
 				db.getTransaction().rollback();
-			System.err.println("Error: Driver not found or null - " + e.getMessage());
-			return null;
+			}
+			// Clear the EntityManager to detach all managed entities
+			db.clear();
+			throw e;
+		} catch (Exception e) {
+			// Clean up: remove the ride from driver's list if it was added
+			if (driver != null && ride != null) {
+				driver.getRides().remove(ride);
+			}
+			if (db.getTransaction().isActive()) {
+				db.getTransaction().rollback();
+			}
+			// Clear the EntityManager to detach all managed entities
+			db.clear();
+			System.err.println("Error creating ride: " + e.getMessage());
+			e.printStackTrace();
+			throw new RuntimeException("Error creating ride: " + e.getMessage(), e);
 		}
 	}
 

@@ -92,6 +92,37 @@ public class CreateRideBean implements Serializable {
 				return "index";
 			}
 			
+			// Validate all required fields
+			if (depart == null || depart.trim().isEmpty()) {
+				FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Departure city is required", null));
+				return null;
+			}
+			
+			if (arrival == null || arrival.trim().isEmpty()) {
+				FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Arrival city is required", null));
+				return null;
+			}
+			
+			if (data == null) {
+				FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ride date is required", null));
+				return null;
+			}
+			
+			if (seats <= 0) {
+				FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Number of seats must be greater than 0", null));
+				return null;
+			}
+			
+			if (cash <= 0) {
+				FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Price must be greater than 0", null));
+				return null;
+			}
+			
 			// Get the logged-in driver's email
 			String driverEmail = loginBean.getCurrentUser().getEmail();
 			
@@ -105,6 +136,9 @@ public class CreateRideBean implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, 
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Ride created successfully", null));
 
+			// Clear form fields after successful creation
+			clearForm();
+
 			return null; // Stay on page to create more rides
 
 		} catch (Exception e) {
@@ -113,6 +147,17 @@ public class CreateRideBean implements Serializable {
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: " + e.getMessage(), null));
 			return null;
 		}
+	}
+	
+	/**
+	 * Clear all form fields after successful ride creation
+	 */
+	private void clearForm() {
+		this.depart = null;
+		this.arrival = null;
+		this.data = null;
+		this.seats = 0;
+		this.cash = 0;
 	}
 
 }

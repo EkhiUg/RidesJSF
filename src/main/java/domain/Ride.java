@@ -14,21 +14,21 @@ public class Ride implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer rideNumber;
 
-    @Column(name = "from_city") // Evita palabra reservada
+    @Column(name = "from_city", nullable = false)
     private String from;
 
-    @Column(name = "to_city") // Evita palabra reservada
+    @Column(name = "to_city", nullable = false)
     private String to;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "ride_date")
+    @Column(name = "ride_date", nullable = false)
     private Date date;
 
     private int nPlaces;
     private float price;
 
     @ManyToOne
-    @JoinColumn(name = "driver_email") // Clave foránea hacia Driver
+    @JoinColumn(name = "driver_email", nullable = false)
     private Driver driver;  
 
     public Ride() {
