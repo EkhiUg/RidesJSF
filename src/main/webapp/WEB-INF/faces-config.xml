@@ -154,6 +154,24 @@ https://jakarta.ee/xml/ns/jakartaee/web-facesconfig_3_0.xsd"
 </navigation-case>
 </navigation-rule>
 
+<navigation-rule>
+<display-name>eserlekuBidaiak.xhtml</display-name>
+<from-view-id>/eserlekuBidaiak.xhtml</from-view-id>
+<navigation-case>
+<from-outcome>index</from-outcome>
+<to-view-id>/Index.xhtml</to-view-id>
+</navigation-case>
+</navigation-rule>
+
+<navigation-rule>
+<display-name>eserlekuBidaiak2.xhtml</display-name>
+<from-view-id>/eserlekuBidaiak2.xhtml</from-view-id>
+<navigation-case>
+<from-outcome>index</from-outcome>
+<to-view-id>/Index.xhtml</to-view-id>
+</navigation-case>
+</navigation-rule>
+
 
 
 </faces-config>

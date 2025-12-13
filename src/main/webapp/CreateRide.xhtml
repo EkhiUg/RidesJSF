@@ -7,61 +7,188 @@
 	xmlns:p="http://primefaces.org/ui">
 <f:view>
 	<h:head>
+		<title>Create Ride</title>
+		<style>
+			body {
+				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				margin: 0;
+				padding: 20px;
+				min-height: 100vh;
+			}
+			
+			.ride-container {
+				max-width: 600px;
+				margin: 0 auto;
+				background-color: white;
+				padding: 30px;
+				border-radius: 15px;
+				box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+			}
+			
+			.page-title {
+				color: #667eea;
+				text-align: center;
+				margin-bottom: 25px;
+				font-size: 28px;
+				font-weight: 600;
+			}
+			
+			.user-info {
+				background-color: #e8f5e9;
+				padding: 15px;
+				border-radius: 8px;
+				margin-bottom: 20px;
+				border-left: 4px solid #4caf50;
+			}
+			
+			.error-info {
+				background-color: #ffebee;
+				padding: 15px;
+				border-radius: 8px;
+				margin-bottom: 20px;
+				border-left: 4px solid #f44336;
+				color: #c62828;
+			}
+			
+			.form-table {
+				width: 100%;
+				border-collapse: separate;
+				border-spacing: 0 15px;
+			}
+			
+			.form-table td {
+				padding: 8px;
+			}
+			
+			.form-table td:first-child {
+				text-align: right;
+				font-weight: 600;
+				color: #555;
+				width: 40%;
+				padding-right: 15px;
+			}
+			
+			.form-table input[type="text"] {
+				width: 100%;
+				padding: 10px;
+				border: 2px solid #e0e0e0;
+				border-radius: 6px;
+				font-size: 14px;
+				transition: border-color 0.3s;
+			}
+			
+			.form-table input[type="text"]:focus {
+				outline: none;
+				border-color: #667eea;
+			}
+			
+			.button-group {
+				text-align: center;
+				margin-top: 25px;
+			}
+			
+			.btn-primary {
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				color: white;
+				padding: 12px 30px;
+				border: none;
+				border-radius: 25px;
+				font-size: 16px;
+				font-weight: 600;
+				cursor: pointer;
+				margin: 0 10px;
+				transition: transform 0.2s, box-shadow 0.2s;
+			}
+			
+			.btn-primary:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+			}
+			
+			.btn-secondary {
+				background-color: #9e9e9e;
+				color: white;
+				padding: 12px 30px;
+				border: none;
+				border-radius: 25px;
+				font-size: 16px;
+				font-weight: 600;
+				cursor: pointer;
+				margin: 0 10px;
+				transition: transform 0.2s;
+			}
+			
+			.btn-secondary:hover {
+				background-color: #757575;
+				transform: translateY(-2px);
+			}
+			
+			.ui-calendar {
+				width: 100%;
+			}
+		</style>
 	</h:head>
 	<h:body>
-		<h:form>
-			<h3>Create Ride</h3>
+		<div class="ride-container">
+			<h:form>
+				<h1 class="page-title">Create New Ride</h1>
 
-			<h:panelGroup rendered="#{login.loggedIn and login.driver}">
-				<p style="color: green;">
-					Creating ride as: <strong>#{login.currentUser.name}</strong>
-					(#{login.currentUser.email})
-				</p>
-			</h:panelGroup>
+				<h:panelGroup rendered="#{login.loggedIn and login.driver}">
+					<div class="user-info">
+						<strong>Driver:</strong> #{login.currentUser.name} (#{login.currentUser.email})
+					</div>
+				</h:panelGroup>
 
-			<h:panelGroup rendered="#{!login.loggedIn or !login.driver}">
-				<p style="color: red;">You must be logged in as a driver to
-					create rides.</p>
-			</h:panelGroup>
+				<h:panelGroup rendered="#{!login.loggedIn or !login.driver}">
+					<div class="error-info">
+						You must be logged in as a driver to create rides.
+					</div>
+				</h:panelGroup>
 
-			<table>
-				<tr>
-					<td>Depart city:</td>
-					<td><h:inputText id="dCity" value="#{createRide.depart}" required="true" requiredMessage="Departure city is required"></h:inputText></td>
-				</tr>
-				<tr>
-					<td>Arrival city:</td>
-					<td><h:inputText id="aCity" value="#{createRide.arrival}" required="true" requiredMessage="Arrival city is required"></h:inputText></td>
-				</tr>
-				<tr>
-					<td>Number of seats:</td>
-					<td><h:inputText id="nSeats" value="#{createRide.seats}" required="true" requiredMessage="Number of seats is required">
-						<f:validateLongRange minimum="1" />
-					</h:inputText></td>
-				</tr>
-				<tr>
-					<td>Price:</td>
-					<td><h:inputText id="price" value="#{createRide.cash}" required="true" requiredMessage="Price is required">
-						<f:validateLongRange minimum="1" />
-					</h:inputText></td>
-				</tr>
-				<tr>
-					<td>Ride date:</td>
+				<table class="form-table">
+					<tr>
+						<td>Departure:</td>
+						<td><h:inputText id="dCity" value="#{createRide.depart}" required="true" requiredMessage="Departure city is required" placeholder="Enter departure city"></h:inputText></td>
+					</tr>
+					<tr>
+						<td>Destination:</td>
+						<td><h:inputText id="aCity" value="#{createRide.arrival}" required="true" requiredMessage="Arrival city is required" placeholder="Enter destination"></h:inputText></td>
+					</tr>
+					<tr>
+						<td>Available Seats:</td>
+						<td><h:inputText id="nSeats" value="#{createRide.seats}" required="true" requiredMessage="Number of seats is required" placeholder="e.g., 4">
+							<f:validateLongRange minimum="1" />
+						</h:inputText></td>
+					</tr>
+					<tr>
+						<td>Price (€):</td>
+						<td><h:inputText id="price" value="#{createRide.cash}" required="true" requiredMessage="Price is required" placeholder="e.g., 15">
+							<f:validateLongRange minimum="1" />
+						</h:inputText></td>
+					</tr>
+					<tr>
+						<td>Date:</td>
 					<td><p:calendar id="data" value="#{createRide.data}"
 							navigator="false" mode="inline" required="true" requiredMessage="Ride date is required">
 							<p:ajax event="dateSelect" listener="#{createRide.onDateSelect}"
 								update="mezuak"></p:ajax>
-						</p:calendar></td>
-				</tr>
-			</table>
-			<p>
-				<h:commandButton value="Create ride"
-					action="#{createRide.rideCreate}" />
-				<h:commandButton value="Close" action="Index" immediate="true" />
-			</p>
-			<h:messages style="color:blue" />
-			<h:messages id="mezuak" style="color:blue" />
-		</h:form>
+								</p:calendar></td>
+					</tr>
+				</table>
+				
+				<div class="button-group">
+					<h:commandButton value="Create Ride" styleClass="btn-primary"
+						action="#{createRide.rideCreate}" />
+					<h:commandButton value="Back" styleClass="btn-secondary" action="Index" immediate="true" />
+				</div>
+				
+				<div style="margin-top: 20px;">
+					<h:messages style="color:#d32f2f; font-weight: 600; display: block; margin-top: 10px;" />
+					<h:messages id="mezuak" style="color:#1976d2; font-weight: 600; display: block; margin-top: 10px;" />
+				</div>
+			</h:form>
+		</div>
 	</h:body>
 </f:view>
 </html>

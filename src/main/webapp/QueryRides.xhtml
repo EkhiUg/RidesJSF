@@ -7,94 +7,192 @@
 	xmlns:p="http://primefaces.org/ui">
 <f:view>
 	<h:head>
-		<title>Find Rides</title>
+		<title>Find Rides - RidesJSF</title>
 		<style>
-.ridesTable {
-	border-collapse: collapse;
-	width: 100%;
-	margin-top: 10px;
-}
+			body {
+				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				margin: 0;
+				padding: 20px;
+				min-height: 100vh;
+			}
+			
+			.query-container {
+				max-width: 900px;
+				margin: 0 auto;
+				background-color: white;
+				padding: 30px;
+				border-radius: 15px;
+				box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+			}
+			
+			.page-title {
+				color: #667eea;
+				text-align: center;
+				margin-bottom: 25px;
+				font-size: 28px;
+				font-weight: 600;
+			}
+			
+			.search-form {
+				background-color: #f5f5f5;
+				padding: 20px;
+				border-radius: 10px;
+				margin-bottom: 25px;
+			}
+			
+			.search-form table {
+				width: 100%;
+			}
+			
+			.search-form td {
+				padding: 10px;
+			}
+			
+			.search-form select {
+				width: 100%;
+				padding: 10px;
+				border: 2px solid #e0e0e0;
+				border-radius: 8px;
+				font-size: 14px;
+				transition: border-color 0.3s;
+			}
+			
+			.search-form select:focus {
+				outline: none;
+				border-color: #667eea;
+			}
+			
+			.form-label {
+				font-weight: 600;
+				color: #555;
+				margin-bottom: 5px;
+				display: block;
+			}
 
-.ridesTable th, .ridesTable td {
-	border: 1px solid #ddd;
-	padding: 8px;
-	text-align: center;
-}
+			.ridesTable {
+				border-collapse: collapse;
+				width: 100%;
+				margin-top: 20px;
+			}
 
-.ridesTable th {
-	background-color: #f2f2f2;
-}
-</style>
+			.ridesTable th, .ridesTable td {
+				padding: 12px;
+				text-align: center;
+			}
+			
+			.ridesTable th {
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				color: white;
+				font-weight: 600;
+			}
+			
+			.ridesTable td {
+				border-bottom: 1px solid #e0e0e0;
+			}
+			
+			.ridesTable tr:hover {
+				background-color: #f5f5f5;
+			}
+			
+			.btn-secondary {
+				background-color: #9e9e9e;
+				color: white;
+				padding: 10px 25px;
+				border: none;
+				border-radius: 25px;
+				font-size: 16px;
+				font-weight: 600;
+				cursor: pointer;
+				margin-top: 20px;
+				transition: transform 0.2s;
+			}
+			
+			.btn-secondary:hover {
+				background-color: #757575;
+				transform: translateY(-2px);
+			}
+			
+			.button-group {
+				text-align: center;
+			}
+		</style>
 	</h:head>
 	<h:body>
-		<h:form>
-			<h3>Find Rides</h3>
+		<div class="query-container">
+			<h:form>
+				<h3 class="page-title">Find Available Rides</h3>
 
-			<table>
-				<tr>
-					<td>Depart city:</td>
-					<td><h:selectOneMenu value="#{queryRides.selectedDepartCity}">
-							<f:selectItem itemLabel="Select City" itemValue=""
-								noSelectionOption="true" />
-							<f:selectItems value="#{queryRides.departCities}" var="city"
-								itemValue="#{city}" itemLabel="#{city}" />
-							<f:ajax listener="#{queryRides.onDepartCityChange}"
-								render="aCity tablaWrapper" />
-						</h:selectOneMenu></td>
+				<div class="search-form">
+					<table>
+						<tr>
+							<td style="width: 35%;">
+								<span class="form-label">Depart City:</span>
+								<h:selectOneMenu value="#{queryRides.selectedDepartCity}">
+									<f:selectItem itemLabel="Select City" itemValue=""
+										noSelectionOption="true" />
+									<f:selectItems value="#{queryRides.departCities}" var="city"
+										itemValue="#{city}" itemLabel="#{city}" />
+									<f:ajax listener="#{queryRides.onDepartCityChange}"
+										render="aCity tablaWrapper" />
+								</h:selectOneMenu>
+							</td>
 
-					<td rowspan="2" style="vertical-align: top; padding-left: 20px;">
-						Ride date:<br /> <p:calendar id="data" value="#{queryRides.date}"
-							navigator="false" mode="inline">
-							<p:ajax event="dateSelect" listener="#{queryRides.onDateSelect}"
-								update="tablaWrapper mezuak" />
-						</p:calendar>
-					</td>
-				</tr>
-				<tr>
-					<td>Arrival city:</td>
-					<td><h:selectOneMenu id="aCity"
-							value="#{queryRides.selectedArrivalCity}">
-							<f:selectItem itemLabel="Select City" itemValue=""
-								noSelectionOption="true" />
-							<f:selectItems value="#{queryRides.arrivalCities}" var="city"
-								itemValue="#{city}" itemLabel="#{city}" />
-							<f:ajax event="valueChange" execute="@this" />
-						</h:selectOneMenu></td>
-				</tr>
-			</table>
+							<td style="width: 35%;">
+								<span class="form-label">Arrival City:</span>
+								<h:selectOneMenu id="aCity"
+									value="#{queryRides.selectedArrivalCity}">
+									<f:selectItem itemLabel="Select City" itemValue=""
+										noSelectionOption="true" />
+									<f:selectItems value="#{queryRides.arrivalCities}" var="city"
+										itemValue="#{city}" itemLabel="#{city}" />
+									<f:ajax event="valueChange" execute="@this" />
+								</h:selectOneMenu>
+							</td>
+							
+							<td rowspan="2" style="vertical-align: top; text-align: center;">
+								<span class="form-label">Ride Date:</span>
+								<p:calendar id="data" value="#{queryRides.date}"
+									navigator="false" mode="inline">
+									<p:ajax event="dateSelect" listener="#{queryRides.onDateSelect}"
+										update="tablaWrapper mezuak" />
+								</p:calendar>
+							</td>
+						</tr>
+					</table>
+				</div>
 
-			<br />
+				<h:panelGroup id="tablaWrapper">
+					<h:dataTable id="tablaRides" value="#{queryRides.rides}" var="ride"
+						styleClass="ridesTable" rendered="#{not empty queryRides.rides}">
 
-			<h:panelGroup id="tablaWrapper">
-				<h:dataTable id="tablaRides" value="#{queryRides.rides}" var="ride"
-					styleClass="ridesTable" rendered="#{not empty queryRides.rides}">
+						<h:column>
+							<f:facet name="header">Driver</f:facet>
+							#{ride.driver.name}
+						</h:column>
 
-					<h:column>
-						<f:facet name="header">Driver</f:facet>
-                        #{ride.driver.name}
-                    </h:column>
+						<h:column>
+							<f:facet name="header">Seats</f:facet>
+							#{ride.nPlaces}
+						</h:column>
 
-					<h:column>
-						<f:facet name="header">Seats</f:facet>
-                        #{ride.nPlaces}
-                    </h:column>
+						<h:column>
+							<f:facet name="header">Price (€)</f:facet>
+							#{ride.price}
+						</h:column>
 
-					<h:column>
-						<f:facet name="header">Price</f:facet>
-                        #{ride.price}
-                    </h:column>
+					</h:dataTable>
+				</h:panelGroup>
 
-				</h:dataTable>
-			</h:panelGroup>
+				<div class="button-group">
+					<h:commandButton value="Close" styleClass="btn-secondary" action="#{queryRides.close}"
+						immediate="true" />
+				</div>
 
-			<p>
-				<h:commandButton value="Close" action="#{queryRides.close}"
-					immediate="true" />
-			</p>
+				<h:messages id="mezuak" style="color:#1976d2; display:block; margin-top:20px; text-align: center; font-weight: 600;" />
 
-			<h:messages id="mezuak" style="color:blue" />
-
-		</h:form>
+			</h:form>
+		</div>
 	</h:body>
 </f:view>
 </html>
